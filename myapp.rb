@@ -136,9 +136,6 @@ post '/' do
   locale      = hashLocales[country]
   translate   = gcloud.translate apiKey
   translation = translate.translate phrase, to: country
-  Twilio::TwiML::Response.new do |r|
-    r.Message 'Welcome to Vertaler, the SMS translation service. You\'ve just asked me to translate the phrase #{phrase} into #{language}.'
-  end.text
   if locale.nil?
     twillio.account.messages.create({
       :from => receiver,
@@ -156,6 +153,9 @@ post '/' do
       :from => receiver
     )
   end
+  Twilio::TwiML::Response.new do |r|
+    r.Message "Welcome to Vertaler, the SMS translation service. You've just asked me to translate the phrase '#{phrase}' into '#{language}'."
+  end.text
 end
 post '/voice' do
   translation = params['Text']
