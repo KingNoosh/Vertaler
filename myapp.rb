@@ -122,7 +122,7 @@ hashLocales = {
   'pt' => "pt-PT",
   'ru' => "ru-RU",
   'sv' => "sv-SE",
-  'zh' => "zh-CN"
+  'zh-CN' => "zh-CN"
 }
 
 post '/' do
@@ -147,12 +147,15 @@ post '/' do
     puts ascii_str
     ascii_str = ascii_str.gsub! ' ', '%20'
     phrase_escaped = phrase.gsub! ' ', '%20'
+    langauge_escaped = language.gsub! ' ', '%20'
     call = twillio.account.calls.create(
       :url  => "http://0cdef1d3.ngrok.io/voice?Text=#{ascii_str}&Phrase=#{phrase_escaped}&Country=#{translation.to}&Locale=#{locale}&Language=#{language}",
       :to   => sender,
       :from => receiver
     )
   end
+  phrase.gsub! '%20', ' '
+  language.gsub! '%20', ' '
   Twilio::TwiML::Response.new do |r|
     r.Message "Welcome to Vertaler, the SMS translation service. You've just asked me to translate the phrase '#{phrase}' into '#{language}'."
   end.text
