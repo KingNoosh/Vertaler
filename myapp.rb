@@ -146,9 +146,9 @@ post '/' do
     ascii_str = translation.text.to_ascii
     puts ascii_str
     ascii_str = ascii_str.gsub! ' ', '%20'
-    phrase    = phrase.gsub! ' ', '%20'
+    phrase_escaped = phrase.gsub! ' ', '%20'
     call = twillio.account.calls.create(
-      :url  => "http://0cdef1d3.ngrok.io/voice?Text=#{ascii_str}&Phrase=#{phrase}&Country=#{translation.to}&Locale=#{locale}&Language=#{language}",
+      :url  => "http://0cdef1d3.ngrok.io/voice?Text=#{ascii_str}&Phrase=#{phrase_escaped}&Country=#{translation.to}&Locale=#{locale}&Language=#{language}",
       :to   => sender,
       :from => receiver
     )
